@@ -1,7 +1,12 @@
-FROM openjdk:11
-WORKDIR /my-project
-CMD ["./gradlew", "clean", "bootJar"]
-COPY build/libs/*.jar app.jar
+FROM gradle:jdk17-jammy AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
 
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+LABEL org.name="hezf"
+#
+# Package stage
+#
+FROM eclipse-temurin:17-jdk-jammy
+COPY --from=build /home/gradle/src/build/libs/santander-dev-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
