@@ -1,5 +1,6 @@
 package me.joaopdmcr.sdw;
 
+import me.joaopdmcr.sdw.application.AskChampionUseCase;
 import me.joaopdmcr.sdw.application.ListChampionsUseCase;
 import me.joaopdmcr.sdw.domain.ports.ChampionRepository;
 import org.springframework.boot.SpringApplication;
@@ -16,5 +17,10 @@ public class SantanderDevApplication {
 	@Bean
 	public ListChampionsUseCase provideListChampionsUseCase(ChampionRepository repository) {
 		return new ListChampionsUseCase(repository);
+	}
+
+	@Bean
+	public AskChampionUseCase provideAskChampionsUseCase(ChampionRepository repository) {
+		return new AskChampionUseCase(repository);
 	}
 }
